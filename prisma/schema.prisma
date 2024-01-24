@@ -1,0 +1,8 @@
+datasource db {
+  provider = "mysql"
+  url      = "mysql://root:@localhost:3306/sale"
+}
+
+generator client {
+  provider        = "prisma-client-js"
+}
