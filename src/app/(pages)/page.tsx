@@ -178,17 +178,19 @@ export default function Home() {
       // });
       setData(dataValue);
       console.log("dataValue", dataValue);
-      fetch("http://localhost:3000/api/" + item, {
+      fetch("https://csv.rabbitspell.com/api/" + item, {
         method: "POST",
         body: JSON.stringify({
           shopee: dataValue,
         }),
       })
         .then((res) => {
+          alert("success");
           console.log("res", res);
           setLoading(false);
         })
         .catch((err) => {
+          alert("fail");
           console.log("err", err);
           setLoading(false);
         });
