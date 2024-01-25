@@ -82,14 +82,40 @@ export async function POST(
     let platf = platform.toLocaleLowerCase().trim();
     if (platf === "mc") {
       const body = await request.json();
-      const res = await db.insert(mc).values(body.shopee);
+
+      const chunkSize = 3000;
+      const chunks = [];
+
+      for (let i = 0; i < body.shopee.length; i += chunkSize) {
+        const chunk = body.shopee.slice(i, i + chunkSize);
+        chunks.push(chunk);
+      }
+      let res = [];
+
+      for (let index = 0; index < chunks.length; index++) {
+        const result = await db.insert(mc).values(chunks[index]);
+        res.push(result);
+      }
       console.log("11222", 11222);
-      return NextResponse.json(res, { status: 201 });
+      return NextResponse.json({ res: res }, { status: 201 });
     } else if (platf === "pv") {
       const body = await request.json();
-      const res = await db.insert(pv).values(body.shopee);
+
+      const chunkSize = 3000;
+      const chunks = [];
+
+      for (let i = 0; i < body.shopee.length; i += chunkSize) {
+        const chunk = body.shopee.slice(i, i + chunkSize);
+        chunks.push(chunk);
+      }
+      let res = [];
+
+      for (let index = 0; index < chunks.length; index++) {
+        const result = await db.insert(pv).values(chunks[index]);
+        res.push(result);
+      }
       console.log("11222", 11222);
-      return NextResponse.json(res, { status: 201 });
+      return NextResponse.json({ res: res }, { status: 201 });
     }
   } catch (error) {
     return NextResponse.json(error, { status: 200 });

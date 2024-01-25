@@ -56,7 +56,9 @@ export default function Home() {
           sale: dataArr["ยอดขาย"],
           transport_service_provider: dataArr["ผู้ให้บริการ"],
           quantity: dataArr["จำนวน"],
-          shipping_cost: dataArr["ค่าจัดส่ง"],
+          shipping_cost: dataArr["ค่าจัดส่ง"]
+            ? dataArr["ค่าจัดส่ง"].replaceAll(",", "")
+            : 0,
           cod_cost: dataArr["ค่า COD"],
           tracking_number: dataArr["หมายเลขพัสดุ"],
           channel: dataArr["ประเภท"],
@@ -178,14 +180,21 @@ export default function Home() {
       // });
       setData(dataValue);
       console.log("dataValue", dataValue);
+      // fetch("http://localhost:3000/api/" + item, {
       fetch("https://csv.rabbitspell.com/api/" + item, {
         method: "POST",
         body: JSON.stringify({
           shopee: dataValue,
         }),
       })
+        .then((res) => res.json())
         .then((res) => {
-          alert("success");
+          if (res.res.length) {
+            alert("success");
+          } else {
+            alert("fail");
+          }
+
           console.log("res", res);
           setLoading(false);
         })
